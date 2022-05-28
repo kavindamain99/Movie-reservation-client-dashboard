@@ -84,6 +84,7 @@ function Theater() {
                   type="text"
                   placeholder="Enter name"
                   onChange={(e) => setName(e.target.value)}
+                  required
                 />
               </Form.Group>
               <Form.Group controlId="form.Email">
@@ -92,6 +93,7 @@ function Theater() {
                   type="phone"
                   placeholder="0772211222"
                   onChange={(e) => setContactNumber(e.target.value)}
+                  required
                 />
               </Form.Group>
               <Form.Group controlId="form.Textarea">
@@ -100,13 +102,27 @@ function Theater() {
                   as="textarea"
                   rows={3}
                   onChange={(e) => setLocation(e.target.value)}
+                  required
                 />
               </Form.Group>
               <br></br>
               <Button type="submit">SUBMIT</Button>
             </Form>
             <div>
-              <h2>{message ? <p>{message}</p> : null}</h2>
+              <h2>
+                {message ? (
+                  <p
+                    style={{
+                      marginTop: "50px",
+                      color: "green",
+                      border: "1px solid green",
+                      padding: "10px 10px 1px",
+                    }}
+                  >
+                    {message}
+                  </p>
+                ) : null}
+              </h2>
             </div>
           </Col>
           <Col>

@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../adminNavbar";
 import Sidebar from "../sidebar";
 import { API } from "../config";
+import { withSwalInstance } from "sweetalert2-react";
+import Swal from "sweetalert2";
 import axios from "axios";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import { useParams } from "react-router-dom";
@@ -52,15 +54,31 @@ export default function UpdateMovie() {
     formData.append("showTime", newMovie.showTime);
     formData.append("fullTicket", newMovie.fullTicket);
     formData.append("halfTicket", newMovie.halfTicket);
+
     //store data
-    axios
-      .put(`${API}movies/${params.id}`, formData)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    Swal.fire({
+      title: "Do you want to Update the Movie?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Update",
+      denyButtonText: `Don't save`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        axios
+          .put(`${API}movies/${params.id}`, formData)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        Swal.fire("Updated!", "", "success");
+        window.location.href = "/movieslist";
+      } else if (result.isDenied) {
+        Swal.fire("Changes are not saved", "", "info");
+      }
+    });
   };
   const handleChange = (e) => {
     setNewMovie({ ...newMovie, [e.target.name]: e.target.value });
@@ -108,6 +126,7 @@ export default function UpdateMovie() {
                   name="name"
                   value={newMovie.name}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
 
@@ -119,6 +138,7 @@ export default function UpdateMovie() {
                   name="director"
                   value={newMovie.director}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
             </Row>
@@ -131,6 +151,7 @@ export default function UpdateMovie() {
                 value={newMovie.desc}
                 onChange={handleChange}
                 maxLength="160"
+                required
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formGridAddress2">
@@ -141,6 +162,7 @@ export default function UpdateMovie() {
                 name="cast1"
                 value={newMovie.cast1}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formGridAddress2">
@@ -151,6 +173,7 @@ export default function UpdateMovie() {
                 name="cast2"
                 value={newMovie.cast2}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -163,6 +186,7 @@ export default function UpdateMovie() {
                   name="fullTicket"
                   value={newMovie.fullTicket}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
               <Form.Group as={Col} controlId="formHalfTicket">
@@ -173,6 +197,7 @@ export default function UpdateMovie() {
                   name="halfTicket"
                   value={newMovie.halfTicket}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
             </Row>
@@ -206,6 +231,7 @@ export default function UpdateMovie() {
                   name="showTime"
                   value={newMovie.showTime}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
 
@@ -217,6 +243,7 @@ export default function UpdateMovie() {
                   name="releaseDate"
                   value={newMovie.releaseDate}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
             </Row>
@@ -228,6 +255,7 @@ export default function UpdateMovie() {
                   accept=".png, .jpg, .jpeg"
                   name="img"
                   onChange={handlePhoto}
+                  readOnly
                 />
               </Form.Group>
 
@@ -240,6 +268,7 @@ export default function UpdateMovie() {
                   value={newMovie.castTime}
                   onChange={handleChange}
                   pattern="[0-9][0-9]+[h]+-[0-9][0-9]+[m]"
+                  required
                 />
               </Form.Group>
             </Row>

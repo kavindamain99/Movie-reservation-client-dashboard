@@ -9,6 +9,7 @@ import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import "./movies.css";
 
 export default function Movies() {
+  const [message, setMessage] = useState("");
   const [newMovie, setNewMovie] = useState({
     name: "",
     desc: "",
@@ -47,9 +48,11 @@ export default function Movies() {
       .post(`${API}movie`, formData)
       .then((res) => {
         console.log(res);
+        setMessage("Movie inserted Successfully");
       })
       .catch((err) => {
         console.log(err);
+        setMessage("Some Error occured");
       });
   };
   const handleChange = (e) => {
@@ -82,6 +85,23 @@ export default function Movies() {
       <NavBar />
       <Sidebar />
       <Container>
+        <div>
+          <h2>
+            {message ? (
+              <p
+                style={{
+                  marginTop: "50px",
+                  color: "green",
+                  border: "1px solid green",
+                  padding: "10px 10px 1px",
+                }}
+              >
+                {message}
+              </p>
+            ) : null}
+          </h2>
+        </div>
+
         <Form
           onSubmit={handleMovie}
           style={{ marginTop: "50px" }}
@@ -97,6 +117,7 @@ export default function Movies() {
                 name="name"
                 value={newMovie.name}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -109,6 +130,7 @@ export default function Movies() {
                 name="director"
                 value={newMovie.director}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
           </Row>
@@ -122,6 +144,7 @@ export default function Movies() {
               value={newMovie.desc}
               onChange={handleChange}
               maxLength="160"
+              required
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formGridAddress2">
@@ -133,6 +156,7 @@ export default function Movies() {
               name="cast1"
               value={newMovie.cast1}
               onChange={handleChange}
+              required
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formGridAddress2">
@@ -144,6 +168,7 @@ export default function Movies() {
               name="cast2"
               value={newMovie.cast2}
               onChange={handleChange}
+              required
             />
           </Form.Group>
 
@@ -156,6 +181,7 @@ export default function Movies() {
                 name="fullTicket"
                 value={newMovie.fullTicket}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
             <Form.Group as={Col} controlId="formHalfTicket">
@@ -166,6 +192,7 @@ export default function Movies() {
                 name="halfTicket"
                 value={newMovie.halfTicket}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
           </Row>
@@ -201,6 +228,7 @@ export default function Movies() {
                 name="showTime"
                 value={newMovie.showTime}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
 
@@ -213,6 +241,7 @@ export default function Movies() {
                 name="releaseDate"
                 value={newMovie.releaseDate}
                 onChange={handleChange}
+                required
               />
             </Form.Group>
           </Row>
@@ -224,6 +253,7 @@ export default function Movies() {
                 accept=".png, .jpg, .jpeg"
                 name="img"
                 onChange={handlePhoto}
+                required
               />
             </Form.Group>
 
@@ -237,6 +267,7 @@ export default function Movies() {
                 value={newMovie.castTime}
                 onChange={handleChange}
                 pattern="[0-9][0-9]+[h]+-[0-9][0-9]+[m]"
+                required
               />
             </Form.Group>
           </Row>
@@ -244,9 +275,6 @@ export default function Movies() {
             Submit
           </Button>
         </Form>
-        {/* <div>
-          <h2>{message ? <p>{message}</p> : null}</h2>
-        </div> */}
       </Container>
     </div>
   );

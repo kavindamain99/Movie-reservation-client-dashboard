@@ -1,6 +1,7 @@
 import React from "react";
 import React, { useState, useEffect } from "react";
-
+import { withSwalInstance } from "sweetalert2-react";
+import Swal from "sweetalert2";
 import NavBar from "../adminNavbar";
 import Sidebar from "../sidebar";
 import { Container, Card, Button, Col, Row } from "react-bootstrap";
@@ -10,7 +11,7 @@ import { Scrollbars } from "react-custom-scrollbars-2";
 import { Link } from "react-router-dom";
 function MoviesList() {
   const [movies, setMovies] = useState([]);
-
+  const SweetAlert = withSwalInstance(Swal);
   //fetch all Theater
 
   const loadMovie = async () => {
@@ -27,12 +28,27 @@ function MoviesList() {
   //remove item from cart
   const destroy = (id) => {
     console.log(id);
-    fetch(`${API}movies/${id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    }).then((response) => {
-      if (window.confirm("Do u want to continue?")) {
-        window.location.href = "/movieslist";
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`${API}movies/${id}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }).then((response) => {
+          //  if (window.confirm("Do u want to continue?")) {
+          //    window.location.href = "/movieslist";
+          //  }
+          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+          window.location.href = "/movieslist";
+        });
       }
     });
   };
