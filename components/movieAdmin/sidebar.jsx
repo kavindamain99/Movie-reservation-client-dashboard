@@ -105,7 +105,9 @@ export default function Sidebar() {
               <MdBookmarkAdded
                 style={{ marginRight: "5px", marginTop: "-8px" }}
               />
-              Bookings
+              <a href="/booking" style={{ textDecoration: "none" }}>
+                Booking
+              </a>
             </NavText>
           </NavItem>
         </SideNav.Nav>
